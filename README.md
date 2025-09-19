@@ -14,7 +14,9 @@ ORCA is a Python command-line tool that lets you manage files, run calculations,
 
 3. Go to an IDE or compiler website like: https://programiz.pro/ide/python
 
-4. Click the 'Run' button and enjoy
+4. Paste the code in the left sidebar
+
+5. Click the 'Run' button and enjoy
 
 
 # License
