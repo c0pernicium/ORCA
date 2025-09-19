@@ -34,10 +34,10 @@ def show_info():
     
     sys_info = [
         color_orca("ORCA Version 0.0.0"),
-        color_orca(f"Uptime: {hours}h {minutes}m {seconds}s"),
-        f"CPU Cores: {multiprocessing.cpu_count()}",
-        f"CWD: {os.getcwd()}",
-        f"Hostname: {socket.gethostname()}"
+        f"\033[92mUptime: {hours}h {minutes}m {seconds}s\033[0m",  # Green
+        f"\033[91mCPU Cores: {multiprocessing.cpu_count()}\033[0m",  # Red
+        f"\033[94mCWD: {os.getcwd()}\033[0m",  # Blue
+        f"\033[95mHostname: {socket.gethostname()}\033[0m"  # Pink
     ]
 
     max_banner_width = max(len(line) for line in banner) + 10
@@ -46,8 +46,6 @@ def show_info():
         left = "\033[95m" + banner[i] + "\033[0m"
         right = sys_info[i] if i < len(sys_info) else ""
         print(f"{left.ljust(max_banner_width)}{right}")
-
-    print("")
 
 def main():
     print(color_orca("Welcome to ORCA"))
@@ -72,6 +70,7 @@ def main():
             print(color_orca("write") + "   - Append text to a file")
             print(color_orca("delete") + "  - Delete a file")
             print(color_orca("fetch") + "   - Fetch data from a URL")
+            print(color_orca("list") + "    - List files in current directory")
             continue
 
         if command.lower() == "quit":
@@ -165,7 +164,7 @@ def main():
             if " " not in content:
                 print("Usage: write (filename text_to_append)")
                 continue
-            filename, text = content.split(" ", 1)
+            filename, text = content.split(" ", 1)  # split only at first space
             if not os.path.exists(filename):
                 print(f"File '{filename}' does not exist.")
                 continue
@@ -196,11 +195,17 @@ def main():
             try:
                 response = requests.get(url)
                 if "application/json" in response.headers.get("Content-Type", ""):
-                    print(response.json())
+                    import json
+                    print(json.dumps(response.json(), indent=4))
                 else:
                     print(response.text)
             except Exception as e:
                 print(f"Failed to fetch: {e}")
+            continue
+        if command.lower() == "list":
+            files = os.listdir()
+            for f in files:
+                print(f)
             continue
 
         if command:
