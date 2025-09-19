@@ -37,7 +37,7 @@ def show_info():
         f"\033[92mUptime: {hours}h {minutes}m {seconds}s\033[0m",  # Green
         f"\033[91mCPU Cores: {multiprocessing.cpu_count()}\033[0m",  # Red
         f"\033[94mCWD: {os.getcwd()}\033[0m",  # Blue
-        f"\033[95mHostname: {socket.gethostname()}\033[0m"  # Pink
+        f"\033[96mHostname: {socket.gethostname()}\033[0m"  # Pink
     ]
 
     max_banner_width = max(len(line) for line in banner) + 10
