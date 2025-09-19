@@ -1,5 +1,7 @@
+<img width="1024" height="1024" alt="ORCAlogo" src="https://github.com/user-attachments/assets/9e406787-568f-4e99-92dd-68150595a93f" />
 # ORCA
 ----------------------------
+
 ORCA is a Python command-line tool that lets you manage files, run calculations, fetch web data, all through simple text commands.
 
 
