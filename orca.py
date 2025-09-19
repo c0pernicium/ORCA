@@ -65,6 +65,7 @@ def main():
 
         if command.lower() == "help":
             print(color_orca("ORCA Help Menu"))
+            print("--------------------------------")
             print(color_orca("echo") + "    - Repeat given text")
             print(color_orca("clear") + "   - Clear the screen")
             print(color_orca("quit") + "    - End the session")
@@ -77,6 +78,7 @@ def main():
             print(color_orca("delete") + "  - Delete a file")
             print(color_orca("fetch") + "   - Fetch data from a URL")
             print(color_orca("list") + "    - List system files")
+            print("--------------------------------")
             continue
 
         if command.lower() == "quit":
