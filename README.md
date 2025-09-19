@@ -2,8 +2,8 @@
 ----------------------------
 
 ORCA is a Python command-line tool that lets you manage files, run calculations, fetch web data, all through simple text commands.
-<img width="485" height="147" alt="ScreenShot" src="https://github.com/user-attachments/assets/c5825072-bd2a-4789-b5bc-c3bab3c332f2" />
 
+<img width="485" height="147" alt="ScreenShot" src="https://github.com/user-attachments/assets/c5825072-bd2a-4789-b5bc-c3bab3c332f2" />
 
 
 # How to use ORCA
