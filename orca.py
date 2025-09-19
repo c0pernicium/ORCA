@@ -50,7 +50,7 @@ def show_info():
     print("")
 
 def main():
-    print(color_orca("ORCA Tech Demo"))
+    print(color_orca("Welcome to ORCA"))
 
     while True:
         try:
