@@ -132,7 +132,7 @@ def main():
         if command.lower() == "time":
             central = pytz.timezone("US/Central")
             now = datetime.now(central)
-            print(color_text(f"Current Central Time: {now.strftime('%Y-%m-%d %H:%M:%S')}"))
+            print(color_text(f"Current Time: {now.strftime('%Y-%m-%d %H:%M:%S')}"))
             continue
 
         if command.startswith("new"):
