@@ -33,7 +33,7 @@ def show_info():
     seconds = int(elapsed % 60)
     
     sys_info = [
-        color_orca("ORCA Version 0.0.0"),
+        "\033[95mORCA Version 0.0.0\033[0m",  # Purple
         f"\033[92mUptime: {hours}h {minutes}m {seconds}s\033[0m",  # Green
         f"\033[91mCPU Cores: {multiprocessing.cpu_count()}\033[0m",  # Red
         f"\033[94mCWD: {os.getcwd()}\033[0m",  # Blue
@@ -47,6 +47,8 @@ def show_info():
         right = sys_info[i] if i < len(sys_info) else ""
         print(f"{left.ljust(max_banner_width)}{right}")
 
+    print("")
+
 def main():
     print(color_orca("Welcome to ORCA"))
 
@@ -57,6 +59,11 @@ def main():
             print()
             continue
 
+        # Automatically clear screen if Enter is pressed with no input
+        if command == "":
+            print("\033[2J\033[H", end="")
+            continue
+
         if command.lower() == "help":
             print("Available commands:")
             print(color_orca("echo") + "    - Repeat given text")
@@ -64,13 +71,13 @@ def main():
             print(color_orca("quit") + "    - End the session")
             print(color_orca("info") + "    - Show ORCA info")
             print(color_orca("calc") + "    - Simple calculator")
-            print(color_orca("time") + "    - Show current US Central Time")
+            print(color_orca("time") + "    - Show current time")
             print(color_orca("new") + "     - Create a new file")
             print(color_orca("open") + "    - Display file contents")
             print(color_orca("write") + "   - Append text to a file")
             print(color_orca("delete") + "  - Delete a file")
             print(color_orca("fetch") + "   - Fetch data from a URL")
-            print(color_orca("list") + "    - List files in current directory")
+            print(color_orca("list") + "    - List system files")
             continue
 
         if command.lower() == "quit":
@@ -156,15 +163,11 @@ def main():
             continue
 
         if command.startswith("write"):
-            rest = command[5:].strip()
-            if not rest.startswith("(") or not rest.endswith(")"):
-                print("Usage: write (filename text_to_append)")
+            parts = re.findall(r"\((.*?)\)", command)  # extract all parentheses groups
+            if len(parts) != 2:
+                print("Usage: write (filename) (text_to_append)")
                 continue
-            content = rest[1:-1].strip()
-            if " " not in content:
-                print("Usage: write (filename text_to_append)")
-                continue
-            filename, text = content.split(" ", 1)  # split only at first space
+            filename, text = parts
             if not os.path.exists(filename):
                 print(f"File '{filename}' does not exist.")
                 continue
@@ -187,21 +190,28 @@ def main():
             continue
 
         if command.startswith("fetch"):
-            rest = command[5:].strip()
-            if not rest.startswith("(") or not rest.endswith(")"):
+            parts = re.findall(r"\((.*?)\)", command)
+            if len(parts) != 1:
                 print("Usage: fetch (url)")
                 continue
-            url = rest[1:-1].strip()
+            url = parts[0].strip()
+            if not url:
+                print("URL cannot be empty.")
+                continue
             try:
-                response = requests.get(url)
-                if "application/json" in response.headers.get("Content-Type", ""):
+                headers = {"User-Agent": "ORCA Shell/0.0.0"}
+                response = requests.get(url, headers=headers, timeout=10)
+                response.raise_for_status()
+                content_type = response.headers.get("Content-Type", "")
+                if "application/json" in content_type:
                     import json
                     print(json.dumps(response.json(), indent=4))
                 else:
                     print(response.text)
-            except Exception as e:
-                print(f"Failed to fetch: {e}")
+            except requests.exceptions.RequestException as e:
+                print(f"Failed to fetch URL: {e}")
             continue
+
         if command.lower() == "list":
             files = os.listdir()
             for f in files:
