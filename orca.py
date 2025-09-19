@@ -13,8 +13,8 @@ def color_orca(text):
     return text.replace("ORCA", "\033[95mORCA\033[0m")
 
 def color_text(text):
-    text = re.sub(r"(\d+(\.\d+)?)", r"\033[93m\1\033[0m", text)  # numbers yellow
-    text = re.sub(r"(\(|\))", r"\033[38;5;214m\1\033[0m", text)  # parentheses orange
+    text = re.sub(r"(\d+(\.\d+)?)", r"\033[93m\1\033[0m", text)  
+    text = re.sub(r"(\(|\))", r"\033[38;5;214m\1\033[0m", text)  
     return text
 
 def show_info():
@@ -33,11 +33,11 @@ def show_info():
     seconds = int(elapsed % 60)
     
     sys_info = [
-        "\033[95mORCA Version 0.0.0\033[0m",  # Purple
-        f"\033[92mUptime: {hours}h {minutes}m {seconds}s\033[0m",  # Green
-        f"\033[91mCPU Cores: {multiprocessing.cpu_count()}\033[0m",  # Red
-        f"\033[94mCWD: {os.getcwd()}\033[0m",  # Blue
-        f"\033[96mHostname: {socket.gethostname()}\033[0m"  # Pink
+        "\033[95mORCA Version 0.0.1\033[0m",
+        f"\033[92mUptime: {hours}h {minutes}m {seconds}s\033[0m",
+        f"\033[91mCPU Cores: {multiprocessing.cpu_count()}\033[0m",
+        f"\033[94mCWD: {os.getcwd()}\033[0m",
+        f"\033[96mHostname: {socket.gethostname()}\033[0m"
     ]
 
     max_banner_width = max(len(line) for line in banner) + 10
@@ -59,13 +59,12 @@ def main():
             print()
             continue
 
-        # Automatically clear screen if Enter is pressed with no input
         if command == "":
             print("\033[2J\033[H", end="")
             continue
 
         if command.lower() == "help":
-            print("Available commands:")
+            print(color_orca("ORCA Help Menu"))
             print(color_orca("echo") + "    - Repeat given text")
             print(color_orca("clear") + "   - Clear the screen")
             print(color_orca("quit") + "    - End the session")
@@ -163,7 +162,7 @@ def main():
             continue
 
         if command.startswith("write"):
-            parts = re.findall(r"\((.*?)\)", command)  # extract all parentheses groups
+            parts = re.findall(r"\((.*?)\)", command)
             if len(parts) != 2:
                 print("Usage: write (filename) (text_to_append)")
                 continue
@@ -199,7 +198,7 @@ def main():
                 print("URL cannot be empty.")
                 continue
             try:
-                headers = {"User-Agent": "ORCA Shell/0.0.0"}
+                headers = {"User-Agent": "ORCA Shell/0.0.1"}
                 response = requests.get(url, headers=headers, timeout=10)
                 response.raise_for_status()
                 content_type = response.headers.get("Content-Type", "")
